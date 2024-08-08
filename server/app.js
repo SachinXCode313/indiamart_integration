@@ -37,6 +37,7 @@ app.use('/indiamart/', (req, res) => {
             code: "200",
             status: "SUCCESS"
         });
+        console.log(req.body);
     } catch (error) {
         // Handle any errors that may occur
         res.status(500).json({
