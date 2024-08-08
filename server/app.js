@@ -39,7 +39,7 @@ app.post('/indiamart/:secret_key', (req, res) => {
         // }
 
         // Set the appropriate HTTP status code and response headers
-        res.status(200).json("Success");
+        res.status(200).json({ code: 200, status: 'Success' });
     } catch (error) {
         console.error('Error processing request:', error);
         res.status(500).json({ code: 500, status: 'Error', message: 'Internal Server Error' });
