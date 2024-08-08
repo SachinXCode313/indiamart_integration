@@ -34,6 +34,7 @@ app.post('/indiamart/:secret_key', (req, res) => {
         const leadData = req.body;
 
         console.log('Received lead:', leadData);
+        res.send(leadData)
 
         // Process lead data (e.g., save to your CRM)
         // Example: saveLeadToCRM(leadData);
