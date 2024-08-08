@@ -31,20 +31,17 @@ app.use('/test', (req, res) => {
     res.send("Hello Server IS working 11:)");
 });
 
-app.get('/indiamart/', (req, res) => {
-    res.send(req.body);
-});
-
 // Define the route
 app.post('/indiamart/', (req, res) => {
     try {
+        // Handle the request
         res.json({
             code: "200",
             status: "SUCCESS"
         });
         console.log(req.body);
     } catch (error) {
-        console.error('Error occurred:', error);
+        // Handle errors
         res.status(500).json({
             code: "500",
             status: "ERROR",
@@ -52,6 +49,7 @@ app.post('/indiamart/', (req, res) => {
         });
     }
 });
+
 
 
 
