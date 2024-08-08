@@ -32,7 +32,7 @@ app.use('/test', (req, res) => {
 });
 
 app.get('/indiamart/', (req, res) => {
-    res.send('GET request to /indiamart/');
+    res.send(req.body);
 });
 
 // Define the route
