@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 app.get("/",(req,res) => {
     res.send("Server is working")
 })
-app.post('/indiamart/{Secret_Key}', (req, res) => {
+app.post('/indiamart/6dE9KZ2RjeYX6n5OjWJPjErINbxsqtpw', (req, res) => {
     const { CODE, STATUS, RESPONSE } = req.body;
     
     if (CODE === 200 && STATUS === 'SUCCESS') {
