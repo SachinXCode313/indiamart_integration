@@ -1,55 +1,71 @@
-import express from 'express';
-import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
-dotenv.config()
-
-
+import express from 'express'
+import bodyParser from 'body-parser';
+// import axios from 'axios';
 const app = express();
-const port = process.env.PORT ;
+dotenv.config();
 
-// Middleware to parse JSON request bodies
+const port = process.env.PORT;
+
 app.use(bodyParser.json());
 
-app.use("/test" ,(req,res)=> {
-    res.send("WOrking")
-})
+// Middleware to check the IndiaMART Push API key
+const verifyIndiamartKey = (req, res, next) => {
+  const urlSegments = req.originalUrl.split('/');
+  const keyFromURL = urlSegments[urlSegments.length - 1]; // Extract key from URL
+  
+  if (keyFromURL === process.env.INDIAMART_PUSH_API_KEY) {
+    next();
+  } else {
+    res.status(403).send({ code: 403, status: 'Forbidden' });
+  }
+};
 
-// Handler function for the webhook listener
-app.post('/indiamart/:secret_key', (req, res) => {
-    try {
-        const secretKey = req.params.secret_key;
-        const data = req.body;
+app.use('/indiamart/:key', verifyIndiamartKey); // Use URL parameter to validate key
 
-        // Log the received data for debugging purposes
-        console.log('Received data:', data);
-        console.log(secretKey);
+app.post('/indiamart/:key', async (req, res) => {
+  const leadData = req.body;
+  console.log('Received Lead Data:', leadData);
 
-        // Define the response object based on the received data
-        let response;
-        switch (data.CODE) {
-            case 200:
-                response = { code: 200, status: 'Success' };
-                break;
-            case 400:
-                response = { code: 400, status: 'Missing parameters' };
-                break;
-            case 500:
-                response = { code: 500, status: 'Error in connecting to the URL' };
-                break;
-            default:
-                response = { code: 500, status: 'Unknown error' };
-                break;
-        }
+  try {
+    // Format the lead data for Zoho CRM
+    const formattedData = {
+      data: {
+        "Name": leadData.RESPONSE.SENDER_NAME,
+        "Phone": leadData.RESPONSE.SENDER_MOBILE,
+        "Email": leadData.RESPONSE.SENDER_EMAIL,
+        "Company": leadData.RESPONSE.SENDER_COMPANY,
+        "Address": leadData.RESPONSE.SENDER_ADDRESS,
+        "City": leadData.RESPONSE.SENDER_CITY,
+        "State": leadData.RESPONSE.SENDER_STATE,
+        "Pincode": leadData.RESPONSE.SENDER_PINCODE,
+        "Country": leadData.RESPONSE.SENDER_COUNTRY_ISO,
+        "Product": leadData.RESPONSE.QUERY_PRODUCT_NAME,
+        "Message": leadData.RESPONSE.QUERY_MESSAGE
+      }
+    };
 
-        // Set the appropriate HTTP status code and response headers
-        res.status(response.code).json(response);
-    } catch (error) {
-        console.error('Error processing request:', error);
-        res.status(500).json({ code: 500, status: 'Error', message: 'Internal Server Error' });
-    }
+    // // Replace with your Zoho CRM API URL and access token
+    // const zohoCRMURL = 'https://www.zohoapis.com/crm/v2/Leads';
+    // const accessToken = 'YOUR_ZOHO_ACCESS_TOKEN';
+
+    // // Send lead data to Zoho CRM
+    // await axios.post(zohoCRMURL, formattedData, {
+    //   headers: {
+    //     'Authorization': `Zoho-oauthtoken ${accessToken}`,
+    //     'Content-Type': 'application/json'
+    //   }
+    // });
+
+    console.log(formattedData)
+
+    res.status(200).send({ code: 200, status: 'Success' });
+  } catch (error) {
+    console.error('Error sending data to Zoho CRM:', error);
+    res.status(500).send({ code: 500, status: 'Error' });
+  }
 });
 
-// Start the server
 app.listen(port, () => {
-    console.log(`Server started, listening on port ${port}...`);
+  console.log(`Middleware listening at https://localhost:${port}`);
 });
