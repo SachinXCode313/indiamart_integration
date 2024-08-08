@@ -31,7 +31,21 @@ app.use('/test', (req, res) => {
     res.send("Hello Server IS working 11:)");
 });
 app.use('/indiamart/', (req, res) => {
-    res.send("Indiamart is online");
+    try {
+        // Assuming the route logic is perfect and no errors should occur
+        res.json({
+            code: "200",
+            status: "SUCCESS"
+        });
+    } catch (error) {
+        // Handle any errors that may occur
+        res.status(500).json({
+            code: "500",
+            status: "ERROR",
+            message: "Something went wrong"
+        });
+    }
+
 });
 
 // API routes
