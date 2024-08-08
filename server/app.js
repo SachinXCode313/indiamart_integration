@@ -30,7 +30,7 @@ app.options('*', cors(corsConfig));
 app.use('/test', (req, res) => {
     res.send("Hello Server IS working 11:)");
 });
-app.use('/indiamart', (req, res) => {
+app.use('/indiamart/', (req, res) => {
     res.send("Indiamart is online");
 });
 
