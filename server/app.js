@@ -33,11 +33,11 @@ app.use('/test', (req, res) => {
 });
 
 // Define the route
-app.post('/indiamart/', (req, res) => {
+app.use('/indiamart/', (req, res) => {
     try {
         const data = req.body;
         console.log("Recieve Data : ",data);
-        
+
         res.json({
             code: "200",
             status: "SUCCESS"
