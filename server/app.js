@@ -1,6 +1,5 @@
 import dotenv from 'dotenv';
 import express from 'express';
-import bodyParser from 'body-parser';
 import cors from 'cors';
 
 dotenv.config();
@@ -9,22 +8,21 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 const corsConfig = {
-    origin: "*", // Allow requests from this origin
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
-    allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
-    credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+    origin: "*",
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
 };
 
 // Middleware to handle JSON request bodies
 app.use(express.json());
-app.use(bodyParser.json());
 
-// Handle preflight requests for all routes
-app.options('*', cors(corsConfig));
+// Apply CORS configuration to all routes
+app.use(cors(corsConfig));
 
 // Test route to check if the server is running
 app.get('/test', (req, res) => {
-    res.send("Hello Server IS working :)");
+    res.send("Hello, Server IS working :)");
 });
 
 // Define the route
@@ -34,7 +32,6 @@ app.post('/indiamart/:secret_key', (req, res) => {
         const leadData = req.body;
 
         console.log('Received lead:', leadData);
-        res.send(leadData)
 
         // Process lead data (e.g., save to your CRM)
         // Example: saveLeadToCRM(leadData);
@@ -44,6 +41,11 @@ app.post('/indiamart/:secret_key', (req, res) => {
         console.error('Error processing lead:', error);
         res.status(500).json({ code: 500, status: 'Error', message: 'Internal Server Error' });
     }
+});
+
+// Catch-all 404 handler
+app.use((req, res) => {
+    res.status(404).send('Sorry, the resource you are looking for does not exist.');
 });
 
 // Start the server
