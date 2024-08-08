@@ -7,6 +7,10 @@ const port = process.env.PORT || 8080;
 // Middleware to parse JSON request bodies
 app.use(bodyParser.json());
 
+app.use("/test" ,(req,res)=> {
+    res.send("WOrking")
+})
+
 // Handler function for the webhook listener
 app.post('/indiamart/:secret_key', (req, res) => {
     try {
