@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import express from 'express';
+import bodyParser from 'body-parser';
 // import routers from './src/routes/routes.js';
 import cors from 'cors';
 
@@ -19,7 +20,7 @@ const corsConfig = {
 
 // Middleware to handle JSON request bodies
 app.use(express.json());
-
+app.use(bodyParser.json());
 // CORS configuration
 // app.use(cors(corsConfig));
 
@@ -34,12 +35,13 @@ app.use('/test', (req, res) => {
 // Define the route
 app.post('/indiamart/', (req, res) => {
     try {
-        // Handle the request
+        const data = req.body;
+        console.log("Recieve Data : ",data);
+        
         res.json({
             code: "200",
             status: "SUCCESS"
         });
-        console.log(req.body);
     } catch (error) {
         // Handle errors
         res.status(500).json({
