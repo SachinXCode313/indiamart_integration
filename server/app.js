@@ -30,24 +30,25 @@ app.options('*', cors(corsConfig));
 app.use('/test', (req, res) => {
     res.send("Hello Server IS working 11:)");
 });
-app.use('/indiamart/', (req, res) => {
+
+app.post('/indiamart/', (req, res) => {
     try {
-        // Assuming the route logic is perfect and no errors should occur
+        // Handle the request
         res.json({
             code: "200",
             status: "SUCCESS"
         });
         console.log(req.body);
     } catch (error) {
-        // Handle any errors that may occur
+        // Handle errors
         res.status(500).json({
             code: "500",
             status: "ERROR",
             message: "Something went wrong"
         });
     }
-
 });
+
 
 // API routes
 // app.use('/api', routers);
