@@ -1,58 +1,48 @@
-import dotenv from 'dotenv';
 import express from 'express';
-import cors from 'cors';
-
-dotenv.config();
+import bodyParser from 'body-parser';
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 
-const corsConfig = {
-    origin: "*",
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true,
-};
+// Middleware to parse JSON request bodies
+app.use(bodyParser.json());
 
-// Middleware to handle JSON request bodies
-app.use(express.json());
-
-// Apply CORS configuration to all routes
-app.use(cors(corsConfig));
-
-// Test route to check if the server is running
-app.get('/test', (req, res) => {
-    res.send("Hello, Server IS working :)");
-});
-
-// Define the route
+// Handler function for the webhook listener
 app.post('/indiamart/:secret_key', (req, res) => {
     try {
         const secretKey = req.params.secret_key;
-        const leadData = req.body;
+        const data = req.body;
 
-        console.log('Received lead:', leadData);
+        // Log the received data for debugging purposes
+        console.log('Received data:', data);
+        console.log(secretKey);
 
-        // Process lead data (e.g., save to your CRM)
-        // Example: saveLeadToCRM(leadData);
+        // Define the response object based on the received data
+        let response;
+        switch (data.CODE) {
+            case 200:
+                response = { code: 200, status: 'Success' };
+                break;
+            case 400:
+                response = { code: 400, status: 'Missing parameters' };
+                break;
+            case 500:
+                response = { code: 500, status: 'Error in connecting to the URL' };
+                break;
+            default:
+                response = { code: 500, status: 'Unknown error' };
+                break;
+        }
 
-        res.status(200).json({ code: 200, status: 'Success' });
+        // Set the appropriate HTTP status code and response headers
+        res.status(response.code).json(response);
     } catch (error) {
-        console.error('Error processing lead:', error);
+        console.error('Error processing request:', error);
         res.status(500).json({ code: 500, status: 'Error', message: 'Internal Server Error' });
     }
 });
 
-// Catch-all 404 handler
-app.use((req, res) => {
-    res.status(404).send('Sorry, the resource you are looking for does not exist.');
-});
-
 // Start the server
-try {
-    app.listen(port, () => {
-        console.log(`Webhook listener is running on port ${port}`);
-    });
-} catch (error) {
-    console.error('Error starting server:', error);
-}
+app.listen(port, () => {
+    console.log(`Server started, listening on port ${port}...`);
+});
