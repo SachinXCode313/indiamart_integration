@@ -9,7 +9,9 @@ const port = process.env.PORT;
 
 app.use(bodyParser.json());
 
-
+app.use("/",(req,res) => {
+    res.send("Server is working")
+})
 
 app.post('/indiamart/{Secret_Key}', (req, res) => {
     const { CODE, STATUS, RESPONSE } = req.body;
