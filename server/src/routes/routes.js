@@ -4,7 +4,18 @@ import express from "express";
 
 const routers = express.Router();
 
-// routers.get('/indiamart',getTripPlan)
+routers.post('/indiamart/',(req,res) => {
+    // const { CODE, STATUS, RESPONSE } = req.body;
+    
+    // if (CODE === 200 && STATUS === 'SUCCESS') {
+    //     console.log('Lead received:', RESPONSE);
+    //     // Handle the lead data here
+    //     res.status(200).json({ code: 200, status: 'Success' });
+    // } else {
+    //     res.status(400).json({ code: 400, status: 'Failure' });
+    // }
+    res.send("indiamart working")
+})
 
 export default routers;
 
