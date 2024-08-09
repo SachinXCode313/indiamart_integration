@@ -14,10 +14,10 @@ app.get("/", (req, res) => {
   res.send("Server is working")
 })
 
-app.get('/api/indiamart/:key', (req, res) => {
-  const secretKey = req.params.key;
-  res.send(`GET request received with key: ${secretKey}`);
-});
+// app.get('/api/indiamart/:key', (req, res) => {
+//   const secretKey = req.params.key;
+//   res.send(`GET request received with key: ${secretKey}`);
+// });
 
 app.post('/api/indiamart/:key', (req, res) => {
   try {
@@ -27,7 +27,7 @@ app.post('/api/indiamart/:key', (req, res) => {
     const { CODE, STATUS, RESPONSE } = req.body;
 
     if (CODE === 200 && STATUS === 'SUCCESS') {
-      console.log('Lead received:', RESPONSE);
+      res.send('Lead received:', RESPONSE);
       res.status(200).json({ code: 200, status: 'Success' });
     } else {
       console.error('Failed webhook received:', req.body);
