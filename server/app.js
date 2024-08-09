@@ -44,8 +44,6 @@ app.post('/api/indiamart/:key', (req, res) => {
 });
 
 
-
-
 app.listen(port, () => {
   console.log(`Middleware listening at https://localhost:${port}`);
 });
