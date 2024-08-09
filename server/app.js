@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import express from 'express'
+import express, { response } from 'express'
 import bodyParser from 'body-parser';
 // import routers from './src/routes/routes.js';
 // import axios from 'axios';
@@ -30,7 +30,7 @@ app.post('/api/indiamart/:key', (req, res) => {
     if (CODE === 200 && STATUS === 'SUCCESS') {
       console.log('Lead received:', RESPONSE);
       // Respond with a success message
-      res.status(200).json({ code: 200, status: 'Success', message: 'Lead received successfully' });
+      res.status(200).json({ code: 200, status: 'Success', message: 'Lead received successfully' , response : Response});
     } else {
       console.error('Failed webhook received:', req.body);
       // Respond with a failure message
