@@ -14,21 +14,23 @@ app.get("/",(req,res) => {
     res.send("Server is working")
 })
 
-app.get('/api/indiamart/',(req,res) => {
-  console.log("api is called :) ");
-  res.send("indiamart is working")
-  // const { CODE, STATUS, RESPONSE } = req.body;
-  
-  // if (CODE === 200 && STATUS === 'SUCCESS') {
-  //     console.log('Lead received:', RESPONSE);
-  //     // Handle the lead data here
-  //     res.status(200).json({ code: 200, status: 'Success' });
-  // } else {
-  //     res.status(400).json({ code: 400, status: 'Failure' });
-  // }
-})
+app.post('/api/indiamart/:key', (req, res) => {
+  try {
+    const { CODE, STATUS, RESPONSE } = req.body;
 
-// app.use('/api', routers);
+    if (CODE === 200 && STATUS === 'SUCCESS') {
+      console.log('Lead received:', RESPONSE);
+      res.status(200).json({ code: 200, status: 'Success' });
+    } else {
+      console.error('Failed webhook received:', req.body);
+      res.status(400).json({ code: 400, status: 'Failure' });
+    }
+  } catch (error) {
+    console.error('Error processing webhook:', error);
+    res.status(500).json({ code: 500, status: 'Internal Server Error' });
+  }
+});
+
 
 app.listen(port, () => {
   console.log(`Middleware listening at https://localhost:${port}`);
