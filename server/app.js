@@ -10,12 +10,15 @@ const port = process.env.PORT;
 
 app.use(bodyParser.json());
 
-app.get("/",(req,res) => {
-    res.send("Server is working")
+app.get("/", (req, res) => {
+  res.send("Server is working")
 })
 
 app.post('/api/indiamart/:key', (req, res) => {
   try {
+    const secretKey = req.params.key; // "6dE9KZ2Xg-Yd4X5Ih25PjErINbxsqtpw"
+    // Further processing with the secretKey
+    res.send(`Received key: ${secretKey}`);
     const { CODE, STATUS, RESPONSE } = req.body;
 
     if (CODE === 200 && STATUS === 'SUCCESS') {
