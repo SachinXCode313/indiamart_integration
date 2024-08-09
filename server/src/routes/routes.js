@@ -4,7 +4,7 @@ import express from "express";
 
 const routers = express.Router();
 
-routers.post('/indiamart/',(req,res) => {
+routers.get('/indiamart/',(req,res) => {
     // const { CODE, STATUS, RESPONSE } = req.body;
     
     // if (CODE === 200 && STATUS === 'SUCCESS') {
