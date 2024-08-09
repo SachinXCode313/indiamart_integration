@@ -30,7 +30,8 @@ app.post('/api/indiamart/:key', (req, res) => {
     if (CODE === 200 && STATUS === 'SUCCESS') {
       console.log('Lead received:', RESPONSE);
       // Respond with a success message
-      res.status(200).json({ code: 200, status: 'Success', message: 'Lead received successfully' , response : Response});
+      res.send(Response);
+      res.status(200).json({ code: 200, status: 'Success', message: 'Lead received successfully'});
     } else {
       console.error('Failed webhook received:', req.body);
       // Respond with a failure message
