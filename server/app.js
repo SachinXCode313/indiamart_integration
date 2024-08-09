@@ -16,6 +16,7 @@ app.get("/",(req,res) => {
 
 app.get('/api/indiamart/',(req,res) => {
   console.log("api is called :) ");
+  res.send("indiamart is working")
   // const { CODE, STATUS, RESPONSE } = req.body;
   
   // if (CODE === 200 && STATUS === 'SUCCESS') {
