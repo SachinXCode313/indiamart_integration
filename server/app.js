@@ -23,15 +23,20 @@ app.post('/api/indiamart/:key', (req, res) => {
   try {
     const secretKey = req.params.key; // Capture the key from the URL
     console.log(`Received key: ${secretKey}`);
+    console.log('Request Body:', req.body);
 
-    // Check if the request body contains the expected fields
+    // Ensure `CODE`, `STATUS`, and `RESPONSE` are present in the request body
     const { CODE, STATUS, RESPONSE } = req.body;
+
+    // Log the received fields
+    console.log('CODE:', CODE);
+    console.log('STATUS:', STATUS);
+    console.log('RESPONSE:', RESPONSE);
 
     if (CODE === 200 && STATUS === 'SUCCESS') {
       console.log('Lead received:', RESPONSE);
       // Respond with a success message
-      res.send(Response);
-      res.status(200).json({ code: 200, status: 'Success', message: 'Lead received successfully'});
+      res.status(200).json({ code: 200, status: 'Success', message: 'Lead received successfully' });
     } else {
       console.error('Failed webhook received:', req.body);
       // Respond with a failure message
@@ -43,6 +48,7 @@ app.post('/api/indiamart/:key', (req, res) => {
     res.status(500).json({ code: 500, status: 'Internal Server Error', message: 'An error occurred' });
   }
 });
+
 
 
 app.listen(port, () => {
