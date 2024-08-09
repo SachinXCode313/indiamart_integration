@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import express from 'express'
 import bodyParser from 'body-parser';
+import routers from './src/routes/routes.js';
 // import axios from 'axios';
 const app = express();
 dotenv.config();
