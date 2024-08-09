@@ -14,6 +14,11 @@ app.get("/", (req, res) => {
   res.send("Server is working")
 })
 
+app.get('/api/indiamart/:key', (req, res) => {
+  const secretKey = req.params.key;
+  res.send(`GET request received with key: ${secretKey}`);
+});
+
 app.post('/api/indiamart/:key', (req, res) => {
   try {
     const secretKey = req.params.key; // "6dE9KZ2Xg-Yd4X5Ih25PjErINbxsqtpw"
