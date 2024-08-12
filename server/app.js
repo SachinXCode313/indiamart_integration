@@ -22,24 +22,32 @@ app.post('/api/indiamart/:key', async (req, res) => {
     const secretKey = req.params.key; // Capture the key from the URL
     console.log(`Received key: ${secretKey}`);
 
-    // Ensure `CODE`, `STATUS`, and `RESPONSE` are present in the request body
-    const { CODE, STATUS, RESPONSE } = req.body;
+    const { RESPONSE } = req.body;
 
-    // Log the received fields
-    console.log('CODE:', CODE);
-    console.log('STATUS:', STATUS);
+    // Log the RESPONSE to ensure it contains the expected data
     console.log('RESPONSE:', RESPONSE);
 
+    if (!RESPONSE) {
+      return res.status(400).json({ code: 400, status: 'Bad Request', message: 'RESPONSE data is missing' });
+    }
 
-    // Prepare data to be sent to Zoho CRM
+    // Extract fields from RESPONSE
     const SENDER_NAME = RESPONSE.SENDER_NAME;
     const SENDER_EMAIL = RESPONSE.SENDER_EMAIL;
-    // Zoho CRM API endpoint with your API key
+
+    // Log extracted fields
+    console.log('SENDER_NAME:', SENDER_NAME);
+    console.log('SENDER_EMAIL:', SENDER_EMAIL);
+
+    // Prepare data for Zoho CRM
     const zohoData = {
       SENDER_NAME,
       SENDER_EMAIL,
-
     };
+
+    // Log zohoData to ensure it's correct
+    console.log('zohoData:', zohoData);
+
     // Send data to Zoho CRM function via API
     const response = await axios.post(process.env.ZOHO_API_URL, zohoData, {
       headers: {
@@ -49,15 +57,13 @@ app.post('/api/indiamart/:key', async (req, res) => {
 
     console.log('Response from Zoho CRM:', response.data);
 
-
-
     res.status(200).json({ code: 200, status: 'Success', message: 'Lead received successfully' });
   } catch (error) {
-    console.error('Error processing webhook:', error);
-    // Respond with an error message
+    console.error('Error processing webhook:', error.response ? error.response.data : error.message);
     res.status(500).json({ code: 500, status: 'Internal Server Error', message: 'An error occurred' });
   }
 });
+
 
 
 
