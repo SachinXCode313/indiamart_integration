@@ -33,19 +33,15 @@ app.post('/api/indiamart/:key', async (req, res) => {
 
     // Prepare data to be sent to Zoho CRM
     const zohoData = {
-      "Lname": "Sachin Gupta",
-      "Email": "sachin@gmail.com"
-
+      CODE,
+      STATUS,
+      RESPONSE
     };
 
     // Zoho CRM API endpoint with your API key
 
     // Send data to Zoho CRM function via API
-    const response = await axios.post(process.env.ZOHO_API_URL, {
-      "Lname": "Sachin Gupta",
-      "Email": "sachin@gmail.com"
-
-    }, {
+    const response = await axios.post(process.env.ZOHO_API_URL, zohoData, {
       headers: {
         'Content-Type': 'application/json'
       }
