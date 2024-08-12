@@ -39,10 +39,9 @@ app.post('/api/indiamart/:key', async (req, res) => {
     };
 
     // Zoho CRM API endpoint with your API key
-    const ZOHO_API_URL = 'https://www.zohoapis.in/crm/v2/functions/indiamart/actions/execute?auth_type=apikey&zapikey=1003.42d93aa3d2208624d972e7a2e316bf1d.7be6d35dbd6a48b2feb7db0705c421b8';
 
     // Send data to Zoho CRM function via API
-    const response = await axios.post(ZOHO_API_URL, {
+    const response = await axios.post(process.env.ZOHO_API_URL, {
       "Lname": "Sachin Gupta",
       "Email": "sachin@gmail.com"
 
