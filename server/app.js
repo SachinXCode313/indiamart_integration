@@ -33,9 +33,9 @@ app.post('/api/indiamart/:key', async (req, res) => {
 
     // Prepare data to be sent to Zoho CRM
     const zohoData = {
-      CODE,
-      STATUS,
-      RESPONSE
+      SENDER_NAME: RESPONSE.SENDER_NAME,
+      SENDER_EMAIL: RESPONSE.SENDER_EMAIL,
+
     };
 
     // Zoho CRM API endpoint with your API key
