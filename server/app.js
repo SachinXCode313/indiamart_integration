@@ -22,18 +22,29 @@ app.post('/api/indiamart/:key', async (req, res) => {
     const IndiaMart = req.body;
 
     // Extract fields from RESPONSE
-    const Company = IndiaMart.RESPONSE.SENDER_COMPANY;
-    const Last_Name = IndiaMart.RESPONSE.SENDER_NAME;
-    const Mobile = IndiaMart.RESPONSE.SENDER_MOBILE;
+    const Company = IndiaMart.RESPONSE.SENDER_COMPANY || '';
+    const Last_Name = IndiaMart.RESPONSE.SENDER_NAME || 'Indiamart Lead';
+    const Mobile = IndiaMart.RESPONSE.SENDER_MOBILE || '';
     const Lead_Source = "IndiaMart";
-    const Email = IndiaMart.RESPONSE.SENDER_EMAIL;
-    const Street = IndiaMart.RESPONSE.SENDER_ADDRESS;
-    const City = IndiaMart.RESPONSE.SENDER_CITY;
-    const State = IndiaMart.RESPONSE.SENDER_STATE;
-    const Zip_Code = IndiaMart.RESPONSE.SENDER_PINCODE;
+    const Email = IndiaMart.RESPONSE.SENDER_EMAIL || '';
+    const Street = IndiaMart.RESPONSE.SENDER_ADDRESS || '';
+    const City = IndiaMart.RESPONSE.SENDER_CITY || '';
+    const State = IndiaMart.RESPONSE.SENDER_STATE || '';
+    const Zip_Code = IndiaMart.RESPONSE.SENDER_PINCODE || '';
+    const Country = lookup.byIso(IndiaMart.RESPONSE.SENDER_COUNTRY_ISO).country || '';
+    const Mobile_2 = IndiaMart.RESPONSE.SENDER_MOBILE_ALT || '';
+    const Subject = IndiaMart.RESPONSE.SUBJECT || '';
+    const Enquiry_Message =
+      IndiaMart.RESPONSE.SENDER_EMAIL_ALT +
+      "<br/>" +
+      IndiaMart.RESPONSE.SENDER_PHONE +
+      "<br/>" +
+      IndiaMart.RESPONSE.SENDER_PHONE_ALT +
+      "<br/>" +
+      IndiaMart.RESPONSE.QUERY_PRODUCT_NAME +
+      "<br/>" +
+      IndiaMart.RESPONSE.QUERY_MESSAGE || '';
 
-
-    // Prepare data for Zoho CRM
     const zohoData = {
       Company,
       Last_Name,
@@ -44,6 +55,10 @@ app.post('/api/indiamart/:key', async (req, res) => {
       City,
       State,
       Zip_Code,
+      Mobile_2,
+      Subject,
+      Enquiry_Message,
+      Country,
     };
 
     // Log zohoData to ensure it's correct
